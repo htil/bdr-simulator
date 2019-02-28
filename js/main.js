@@ -44,11 +44,8 @@ window.Device = new Bluetooth.BCIDevice((sample) => {
         weighted.engagement = weighted.engagement * WEIGHT + (engagement || 0) * (1 - WEIGHT);
     }
 
-    //console.log(weighted.alpha + " : " + weighted.beta + " : " + weighted.theta);
-    //console.log(weighted.engagement);
-
     if (window.gameInstance.__ready == true) {
-        //console.log("gameInstance ready", weighted.engagement)
+        // console.log("gameInstance ready", window.gameInstance)
         window.gameInstance.SendMessage("Drone", "SetSpeed", weighted.engagement);
     }
 });
