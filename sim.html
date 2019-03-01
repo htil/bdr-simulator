@@ -3,9 +3,16 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | bdr</title>
+    <title>Brain-Drone Race Qualifiers</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
+	<link rel="stylesheet" href="TemplateData/style.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+	<!--===============================================================================================-->
     <script src="TemplateData/UnityProgress.js"></script>
     <script src="Build/UnityLoader.js"></script>
   </head>
@@ -16,11 +23,60 @@
         <div class="webgl-logo"></div>
         <div class="fullscreen" onclick="gameInstance.SetFullscreen(1)"></div>
         <div class="title">bdr</div>
-        <button onclick="connect()">Connect</button>
+        <button id="connect">Connect</button>
       </div>
-    </div>
+	</div>
+	<div class="container-contact2">
+			<div class="wrap-contact2">
+				<form class="contact2-form validate-form">
+					<span class="contact2-form-title">
+						BDR Qualifiers
+					</span>
+
+					<div class="wrap-input2 validate-input" data-validate="Name is required">
+						<input class="input2" type="text" name="name">
+						<span class="focus-input2" data-placeholder="NAME"></span>
+					</div>
+
+					<div class="wrap-input2 validate-input" data-validate="Last name is required">
+						<input class="input2" type="text" name="lname">
+						<span class="focus-input2" data-placeholder="LAST NAME"></span>
+					</div>
+
+					<div class="wrap-input2 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+						<input class="input2" type="text" name="email">
+						<span class="focus-input2" data-placeholder="EMAIL"></span>
+					</div>
+
+					<div class="container-contact2-form-btn">
+						<div class="wrap-contact2-form-btn">
+							<div class="contact2-form-bgbtn"></div>
+							<button class="contact2-form-btn">
+								Start!
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
   </body>
+<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-firestore.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBe_QFRRwle_V0VR8UX8hmM71Ul7Pihhjs",
+    authDomain: "bdr-qualifiers.firebaseapp.com",
+    databaseURL: "https://bdr-qualifiers.firebaseio.com",
+    projectId: "bdr-qualifiers",
+    storageBucket: "",
+    messagingSenderId: "136624516589"
+  };
+  firebase.initializeApp(config);
+</script>
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="js/BCIDevice.build.js"></script>  
   <script src="js/bci.min.js"></script>
-  <script src="js/BCIDevice.build.js"></script>
+  <script src="js/validate.js"></script> 
   <script src="js/main.js"></script>
 </html>

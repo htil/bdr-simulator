@@ -4,6 +4,11 @@
  *, *::before, *::after {
 	box-sizing: border-box;
   }
+
+  a:hover {
+	  text-decoration: none;
+	  color: #9b2522;
+  }
   
   /*--------------------
    Leaderboard
@@ -228,4 +233,10 @@ h3.steps::after {
 	transition: all 200ms ease-in-out;
 	box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .15);
 	transform: scale3d(1.050, 1.050, 1);
+}
+
+@media (max-width: 800px) {
+	.arrow {
+		display: none;
+	}
 }

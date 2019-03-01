@@ -1,6 +1,15 @@
+window.onload = () => {
+
+	$(".webgl-content").hide();
+	$(".container-contact2").show();
+
+	var fb = firebase.firestore();
+
 const SECONDS = 0.25;
 const BUFFER_SIZE = SECONDS * 256;
 const WEIGHT = 0.95;
+let time = 0, timer;
+let rounds = {}, roundNumber = 1;
 
 let buffer = new Array();
 let weighted = {
@@ -9,6 +18,7 @@ let weighted = {
     theta: -1,
     engagement: -1
 };
+console.log($(".webgl-content").is(":visible"));
 
 window.Device = new Bluetooth.BCIDevice((sample) => {
     if (Bluetooth.BCIDevice.electrodeIndex("AF7") !== sample.electrode) return;
@@ -45,23 +55,64 @@ window.Device = new Bluetooth.BCIDevice((sample) => {
     }
 
     if (window.gameInstance.__ready == true) {
-        // console.log("gameInstance ready", window.gameInstance)
         window.gameInstance.SendMessage("Drone", "SetSpeed", weighted.engagement);
     }
 });
 
 let connect = async() => {
     try {
-        await window.Device.connect();
+        // await window.Device.connect();
 
-        window.gameInstance = UnityLoader.instantiate("gameContainer", "Build/bdr-simulator.json", {onProgress: UnityProgress, Module: {
-            onRuntimeInitialized: function () {
-              UnityProgress(gameInstance, "complete");
-              window.gameInstance.__ready = true;
-            },
-          }});
+		window.gameInstance = UnityLoader.instantiate("gameContainer", "Build/bdr-simulator.json", {onProgress: UnityProgress, Module: {
+			onRuntimeInitialized: function () {
+				UnityProgress(gameInstance, "complete");
+				window.gameInstance.__ready = true;
+			},
+		}});
     } catch (e) {
         console.log("connect/load error. retrying...");
         connect();
     }
+}
+
+let startTimer = () => {
+	timer = setInterval(() => { console.log("TIME IS ", time); time++; }, 1000);
+}
+
+let stopTimer = () => {
+	clearInterval(timer);
+}
+
+let writeUserData = (name, lastname, email) => {
+	fb.collection("participants").add({
+		name: name,
+		lastname: lastname,
+		email : email,
+		rounds: rounds
+	  }).then(() => {console.log("ok")})
+}
+
+window.addEventListener("keydown", (e) => {
+	console.log(e.key)
+	if (e.key == "-") {
+		rounds[roundNumber] = time + "s";
+		time = 0;
+		roundNumber++;
+		stopTimer();
+	} else if (e.key == "=") {
+		time = 0;
+		startTimer();
+	} else if (e.key == "Alt") {
+		writeUserData(localStorage.getItem("name"), localStorage.getItem("lastname"), localStorage.getItem("email"));
+		rounds = {};
+		time = 0;
+		roundNumber = 0;
+		stopTimer();
+	}
+});
+
+$("#connect").on("click", () => {
+	connect();
+});
+
 }
