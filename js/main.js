@@ -61,7 +61,7 @@ window.Device = new Bluetooth.BCIDevice((sample) => {
 
 let connect = async() => {
     try {
-        // await window.Device.connect();
+        await window.Device.connect();
 
 		window.gameInstance = UnityLoader.instantiate("gameContainer", "Build/bdr-simulator.json", {onProgress: UnityProgress, Module: {
 			onRuntimeInitialized: function () {
@@ -93,7 +93,7 @@ let writeUserData = (name, lastname, email) => {
 }
 
 window.addEventListener("keydown", (e) => {
-	console.log(e.key)
+	//console.log(e.key)
 	if (e.key == "-") {
 		rounds[roundNumber] = time + "s";
 		time = 0;
