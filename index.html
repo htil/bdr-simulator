@@ -51,6 +51,9 @@
 				<a class="nav-link js-scroll-trigger" href="#howto">How to use</a>
 			</li>
 			<li class="nav-item">
+				<a class="nav-link js-scroll-trigger" href="#scores">Leaderboard</a>
+			</li>
+			<li class="nav-item">
 				<a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
 			</li>
         </ul>
@@ -201,36 +204,29 @@
   </section>
 
   <!-- Call to Action Section -->
-  <section class="page-section bg-dark text-white">
+  <section id="scores" class="page-section bg-dark text-white">
     <div class="container text-center">
-      <!-- <h2 class="mb-4">Free Download at Start Bootstrap!</h2>
-	  <a class="btn btn-light btn-xl" href="https://startbootstrap.com/themes/creative/">Download Now!</a> -->
-	  <div class="leaderboard">
-		<h1 class="text-center">
-		  Leaderboard
-		</h1>
-		<ol>
-		  <li>
-			<mark>Jerry Wood</mark>
-			<small>315</small>
-		  </li>
-		  <li>
-			<mark>Brandon Barnes</mark>
-			<small>301</small>
-		  </li>
-		  <li>
-			<mark>Raymond Knight</mark>
-			<small>292</small>
-		  </li>
-		  <li>
-			<mark>Trevor McCormick</mark>
-			<small>245</small>
-		  </li>
-		  <li>
-			<mark>Andrew Fox</mark>
-			<small>203</small>
-		  </li>
-		</ol>
+	<h2 class="text-center text-white mt-0">Leaderboard</h2>
+	<hr class="divider my-4" style="border-color: white;">
+	  <div class="row">
+		  <div class="col-lg-6">
+				<div class="leaderboard" id="leaderboard">
+					<h1 class="text-center">
+						High Scores
+					</h1>
+					<ol id="high-scores">
+					</ol>
+				</div>
+		  </div>
+		  <div class="col-lg-6">
+				<div class="leaderboard" id="qualifiers">
+					<h1 class="text-center">
+						Qualifiers
+					</h1>
+					<ol id="qualifiers-avgs">
+					</ol>
+				</div>
+		  </div>
 	  </div>
     </div>
   </section>
@@ -266,6 +262,21 @@
     </div>
   </footer>
 
+<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-firestore.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBe_QFRRwle_V0VR8UX8hmM71Ul7Pihhjs",
+    authDomain: "bdr-qualifiers.firebaseapp.com",
+    databaseURL: "https://bdr-qualifiers.firebaseio.com",
+    projectId: "bdr-qualifiers",
+    storageBucket: "",
+    messagingSenderId: "136624516589"
+  };
+  firebase.initializeApp(config);
+</script>
+
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -276,6 +287,7 @@
 
   <!-- Custom scripts for this template -->
   <script src="js/creative.min.js"></script>
+  <script src="js/leaderboard.js"></script>
 
   <script>
 	let year = new Date().getFullYear();

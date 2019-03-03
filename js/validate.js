@@ -47,9 +47,9 @@
 		if (check) {
 			$(".webgl-content").show();
 			$(".container-contact2").hide();
-			localStorage.setItem("name", name);
-			localStorage.setItem("lastname", lname);
-			localStorage.setItem("email", email);
+			localStorage.setItem("name", $(name).val().trim());
+			localStorage.setItem("lastname", $(lname).val().trim());
+			localStorage.setItem("email", $(email).val().trim());
 			return false;
 		}
 
