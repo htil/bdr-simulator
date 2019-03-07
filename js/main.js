@@ -40,8 +40,9 @@ class RaceDataManager {
 	 */
 	writeUserData = (fb, name, lastname, email) => {
 		let roundNum = 0;
-		Object.values(this.rounds).map((o) => {
-			if (o > this.highest) this.highest = o;
+		Object.values(this.rounds).map((o, i) => {
+			if (i == 0) this.highest = o;
+			if (o < this.highest) this.highest = o;
 			return roundNum += Number(o);
 		});
 		this.roundAverage = roundNum / (this.roundNumber - 1);

@@ -4,17 +4,14 @@ window.onload = () => {
 	let avg_container = document.getElementById("qualifiers-avgs");
 
 	let coll = fb.collection("participants").orderBy("high_score").limit(5);
+	let coll_avg = fb.collection("participants").orderBy("round_average", "asc").limit(5);
 
 	coll.onSnapshot((querySnapshot) => {
-		if (container.children.length != 0 || avg_container.children.length != 0) {
+		if (container.children.length != 0) {
 			document.getElementById("leaderboard").children[1].remove();
-			document.getElementById("qualifiers").children[1].remove();
 			container = document.createElement("ol");
 			container.id ="high-scores";
-			avg_container = document.createElement("ol");
-			avg_container.id ="qualifiers-avgs";
 			document.getElementById("leaderboard").append(container);
-			document.getElementById("qualifiers").append(avg_container);
 		}
 		querySnapshot.forEach((doc) => {
 			let board_player_template = document.createElement("li");
@@ -25,7 +22,17 @@ window.onload = () => {
 			board_player_template.append(mark);
 			board_player_template.append(small);
 			container.appendChild(board_player_template);
+		});
+	});
 
+	coll_avg.onSnapshot((querySnapshot) => {
+		if (avg_container.children.length != 0) {
+			document.getElementById("qualifiers").children[1].remove();
+			avg_container = document.createElement("ol");
+			avg_container.id ="qualifiers-avgs";
+			document.getElementById("qualifiers").append(avg_container);
+		}
+		querySnapshot.forEach((doc) => {
 			let avg_player = document.createElement("li");
 			let mark_avg = document.createElement("mark");
 			let small_avg = document.createElement("small");
