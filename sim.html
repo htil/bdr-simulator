@@ -3,8 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Brain-Drone Race Qualifiers</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <title>Brain-Drone Race Experience</title>
 	<link rel="stylesheet" href="TemplateData/style.css">
 	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="css/util.css">
@@ -12,88 +11,115 @@
 	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
 	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
 	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="css/custom.css">
 	<!--===============================================================================================-->
-    <script src="TemplateData/UnityProgress.js"></script>
-    <script src="Build/UnityLoader.js"></script>
-  </head>
-  <body>
-    <div class="webgl-content" style="display: none;">
-      <div id="gameContainer" style="width: 960px; height: 600px"></div>
-      <div class="footer">
-        <!-- <div class="webgl-logo"></div> -->
-        <div class="fullscreen" onclick="gameInstance.SetFullscreen(1)"></div>
-        <div class="title">bdr</div>
-		<!-- <div class="container-contact2-form-btn">
-			<div class="wrap-contact2-form-btn">
-				<div class="contact2-form-bgbtn"></div>
-				<button class="contact2-form-btn" id="connect">
-					Connect
-				</button>
-			</div>
+	<!-- Plugins -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+	<!-- End plugins -->
+	<script src="TemplateData/UnityProgress.js"></script>
+	<script src="Build/UnityLoader.js"></script>
+</head>
+<body>
+	<div class="webgl-content" style="display: none;">
+		<span class="contact2-form-title-2">
+			Brain-Drone Race Experience
+		</span>
+	<!-- Game screen -->
+	<div id="gameContainer" style="width: 100vw; height: 100%"></div>
+	<!-- End game screen -->
+	<!-- First button to connect when entering for the first time. -->
+	<div id="pre-start" class="container-contact2-form-btn">
+		<div class="wrap-contact2-form-btn" >
+			<div class="contact2-form-bgbtn"></div>
+			<button id="connect" class="contact2-form-btn">
+				Connect
+			</button>
 		</div>
-		<div class="container-contact2-form-btn">
-			<div class="wrap-contact2-form-btn">
-				<div class="contact2-form-bgbtn"></div>
-				<button class="contact2-form-btn" id="submit">
-					Submit
-				</button>
-			</div>
-		</div> -->
-		<button id="connect">Connect</button>
-		<button id="submit">Submit</button>
-      </div>
+		<div class="wrap-contact2-form-btn">
+			<div class="contact2-form-bgbtn-blue"></div>
+			<button id="instructions-btn" class="contact2-form-btn">
+				Instructions
+			</button>
+		</div>
 	</div>
-	<div class="container-contact2">
-			<div class="wrap-contact2">
-				<form class="contact2-form validate-form">
-					<span class="contact2-form-title">
-						BDR Qualifiers
-					</span>
-
-					<div class="wrap-input2 validate-input" data-validate="Name is required">
-						<input class="input2" type="text" name="name">
-						<span class="focus-input2" data-placeholder="NAME"></span>
-					</div>
-
-					<div class="wrap-input2 validate-input" data-validate="Last name is required">
-						<input class="input2" type="text" name="lname">
-						<span class="focus-input2" data-placeholder="LAST NAME"></span>
-					</div>
-
-					<div class="wrap-input2 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input2" type="text" name="email">
-						<span class="focus-input2" data-placeholder="EMAIL"></span>
-					</div>
-
-					<div class="container-contact2-form-btn">
-						<div class="wrap-contact2-form-btn">
-							<div class="contact2-form-bgbtn"></div>
-							<button class="contact2-form-btn">
-								Start!
-							</button>
-						</div>
-					</div>
-				</form>
+	<!-- End first time button -->
+	<!-- Buttons under the simulation screen. -->
+	<div id="footer" style="display: none;" class="footer">
+		<div class="wrap-contact2-form-btn" style="display: inline-block; margin-bottom: 10px;">
+			<div class="container-contact2-form-btn">
+				<div class="wrap-contact2-form-btn" style="margin-right: 20px; margin-left: 20px;">
+					<div class="contact2-form-bgbtn"></div>
+					<button id="connect" class="contact2-form-btn">
+						Connect
+					</button>
+				</div>
+				<div class="wrap-contact2-form-btn" style="margin-right: 20px;">
+					<div class="contact2-form-bgbtn"></div>
+					<button id="submit" class="contact2-form-btn">
+						Submit Score
+					</button>
+				</div>
+				<div class="wrap-contact2-form-btn" style="margin-right: 20px;">
+					<div class="contact2-form-bgbtn"></div>
+					<button id="plot-button" style="background-image: none;" class="fullscreen contact2-form-btn">
+						Plot
+					</button>
+				</div>
+				<div class="wrap-contact2-form-btn">
+					<div class="contact2-form-bgbtn"></div>
+					<button id="fullscreen" style="background-image: none;" class="fullscreen contact2-form-btn">
+						Fullscreen
+					</button>
+				</div>
 			</div>
 		</div>
-  </body>
+	</div>
+	<!-- End footer buttons -->
+	</div>
+	<!-- Name form at the beginning of the simulation. -->
+	<div class="container-contact2">
+		<div class="wrap-contact2">
+			<form class="contact2-form validate-form">
+				<span class="contact2-form-title">
+					Brain-Drone Race Experience
+				</span>
+
+				<div class="wrap-input2 validate-input" data-validate="Name is required">
+					<input class="input2" type="text" name="name">
+					<span class="focus-input2" data-placeholder="NAME"></span>
+				</div>
+
+				<div class="container-contact2-form-btn">
+					<div class="wrap-contact2-form-btn">
+						<div class="contact2-form-bgbtn"></div>
+						<button class="contact2-form-btn">
+							Start!
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<!-- End form -->
+</body>
 <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-firestore.js"></script>
 <script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyBe_QFRRwle_V0VR8UX8hmM71Ul7Pihhjs",
-    authDomain: "bdr-qualifiers.firebaseapp.com",
-    databaseURL: "https://bdr-qualifiers.firebaseio.com",
-    projectId: "bdr-qualifiers",
-    storageBucket: "",
-    messagingSenderId: "136624516589"
-  };
-  firebase.initializeApp(config);
+	// Initialize Firebase
+	var config = {
+		apiKey: "AIzaSyBe_QFRRwle_V0VR8UX8hmM71Ul7Pihhjs",
+		authDomain: "bdr-qualifiers.firebaseapp.com",
+		databaseURL: "https://bdr-qualifiers.firebaseio.com",
+		projectId: "bdr-qualifiers",
+		storageBucket: "",
+		messagingSenderId: "136624516589"
+	};
+	firebase.initializeApp(config);
 </script>
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="js/BCIDevice.build.js"></script>  
-  <script src="js/bci.min.js"></script>
-  <script src="js/validate.js"></script> 
-  <script src="js/main.js"></script>
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="js/BCIDevice.build.js"></script>  
+<script src="js/bci.min.js"></script>
+<script src="js/validate.js"></script> 
+<script src="js/main.js"></script>
 </html>

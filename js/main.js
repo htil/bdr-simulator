@@ -1,6 +1,6 @@
 
 class RaceDataManager {
-	constructor(time = 1, rounds = {}, roundNumber = 1, running = false) {
+	constructor(time = 1, rounds = {}, roundNumber = 1, running = false, engagement = 0, popup = false) {
 		this.time = time;
 		this.timer = null;
 		this.rounds = rounds;
@@ -8,10 +8,8 @@ class RaceDataManager {
 		this.roundAverage = 0;
 		this.highest = 0;
 		this.running = running;
-	}
-
-	init = () => {
-
+		this.engagement = engagement;
+		this.popup = popup;
 	}
 
 	/**
@@ -24,6 +22,10 @@ class RaceDataManager {
 				this.stopTimer();
 			} else if (window.started) {
 				this.time++;
+				if (this.popup)
+					Plotly.extendTraces('plot', {
+						y: [[this.engagement]]
+					}, [0]);
 			}
 		}, interval || 1000);
 	}
@@ -38,7 +40,7 @@ class RaceDataManager {
 	/**
 	 * 
 	 */
-	writeUserData = (fb, name, lastname, email) => {
+	writeUserData = (fb, name) => {
 		let roundNum = 0;
 		Object.values(this.rounds).map((o, i) => {
 			if (i == 0) this.highest = o;
@@ -46,15 +48,25 @@ class RaceDataManager {
 			return roundNum += Number(o);
 		});
 		this.roundAverage = roundNum / (this.roundNumber - 1);
-		fb.collection("participants").add({
+		fb.collection("simulator-players").add({
 			name: name,
-			lastname: lastname,
-			email : email,
 			rounds: this.rounds,
-			round_average: this.roundAverage.toFixed(2),
+			round_average: this.roundAverage,
 			high_score: this.highest
 		}).then(() => {
 			this.reset();
+			Swal.fire({
+				title: '<strong>Final Score</strong>',
+				type: 'info',
+				html: `Your high score was ${this.highest} and round average was ${this.roundAverage} <br>Your results can be seen in the Brain-Drone Experience website.`,
+				showCloseButton: true,
+				focusConfirm: false,
+				confirmButtonText:
+					'OK!',
+				onClose: () => {
+					window.location.reload();
+				}
+			});
 		});
 	}
 
@@ -62,7 +74,6 @@ class RaceDataManager {
 	 * 
 	 */
 	newRound = () => {
-		console.log("new round?")
 		this.rounds[this.roundNumber] = this.time;
 		this.time = 1;
 		this.roundNumber++;
@@ -133,12 +144,17 @@ window.onload = () => {
 
 		if (window.gameInstance.__ready == true) {
 			window.gameInstance.SendMessage("Drone", "SetSpeed", weighted.engagement);
+			dataManager.engagement = weighted.engagement;
+
+			document.getElementById("pre-start").style.display = "none";
+			document.getElementById("footer").style.display = "flex";
 		}
 	});
 
 	let connect = async() => {
 		try {
-			// await window.Device.connect();
+			await window.Device.connect();
+			// Plot data
 			window.gameInstance = UnityLoader.instantiate("gameContainer", "Build/bdr-simulator.json", {onProgress: UnityProgress, Module: {
 				onRuntimeInitialized: function () {
 					UnityProgress(gameInstance, "complete");
@@ -152,10 +168,8 @@ window.onload = () => {
 	}
 
 	window.addEventListener("keydown", (e) => {
-		console.log("Clicked");
 		setTimeout(() => {
 			if (window.started && !dataManager.running) {
-				console.log("yes, inside.")
 				dataManager.running = true;
 				dataManager.startTimer();
 			}
@@ -167,7 +181,60 @@ window.onload = () => {
 	});
 
 	$("#submit").on("click", () => {
-		console.log(dataManager.rounds);
-		dataManager.writeUserData(fb, localStorage.getItem("name"), localStorage.getItem("lastname"), localStorage.getItem("email"));
+		if (dataManager.roundNumber > 1) {
+			dataManager.writeUserData(fb, localStorage.getItem("name"));
+		} else {
+			Swal.fire({
+				title: 'Sorry!',
+				text: 'You have not completed any rounds yet. Your score cannot be submitted.',
+				type: 'error',
+				confirmButtonText: 'OK'
+			});
+		}
+	});
+
+	$("#fullscreen").on("click", () => {
+		window.gameInstance.SetFullscreen(1);
+	});
+
+	$("#plot-button").on("click", () => {
+		Swal.fire({
+			title: '<strong>Engagement Plot</strong>',
+			type: 'info',
+			html: '<div id="plot"></div>',
+			showCloseButton: true,
+			focusConfirm: false,
+			confirmButtonText:
+				'OK!',
+			onClose: () => {
+				dataManager.popup = false;
+			}
+		});
+
+		dataManager.popup = true;
+
+		var eeg_data = {
+			mode: 'lines',
+			y: [1],
+			marker: {
+				color: '#C8A2C8',
+				line: {
+					width: 2.5
+				}
+			}
+		};
+		Plotly.newPlot('plot', [eeg_data]);
+	});
+
+	$("#instructions-btn").on("click", () => {
+		Swal.fire({
+			title: '<strong>Instructions</strong>',
+			type: 'info',
+			html: 'Start by pressing "Connect", select your Muse device, then press any key to start the simulator!',
+			showCloseButton: true,
+			focusConfirm: false,
+			confirmButtonText:
+				'OK!'
+		});
 	});
 }

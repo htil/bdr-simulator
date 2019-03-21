@@ -9,6 +9,16 @@
 	  text-decoration: none;
 	  color: #9b2522;
   }
+
+  .footer {
+	margin-bottom: 20px;
+  }
+
+  .bottom-right {
+	  position: relative;
+	  display: flex;
+	  float: right;
+  }
   
   /*--------------------
    Leaderboard
@@ -19,7 +29,7 @@
 	left: 50%;
 	transform: translate(-50%, -50%);
 	width: 285px;
-	height: 308px;
+	height: 686px;
 	background: linear-gradient(to bottom, #3a404d, #181c26);
 	border-radius: 10px;
 	box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
@@ -149,19 +159,48 @@
   }
   .leaderboard ol li:nth-child(5) {
 	background: #c24448;
-	border-radius: 0 0 10px 10px;
   }
   .leaderboard ol li:nth-child(5)::after {
 	background: #c24448;
 	box-shadow: 0 -2.5px 0 rgba(0, 0, 0, 0.12);
-	border-radius: 0 0 10px 10px;
   }
   .leaderboard ol li:nth-child(5) mark::before, .leaderboard ol li:nth-child(5) mark::after {
 	top: -9px;
 	bottom: auto;
 	border-top: none;
+	border-bottom: 8px solid #b94545;
+  }
+
+  .leaderboard ol li:nth-child(n+6) {
+	background: #c24448;
+  }
+  .leaderboard ol li:nth-child(n+6)::after {
+	background: #c24448;
+	box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+  }
+  .leaderboard ol li:nth-child(n+6) mark::before, .leaderboard ol li:nth-child(n+6) mark::after {
+	top: -7px;
+	bottom: auto;
+	border-top: none;
+	border-bottom: 6px solid #b94545;
+  }
+
+  .leaderboard ol li:nth-child(12) {
+	background: #c24448;
+	border-radius: 0 0 10px 10px;
+  }
+  .leaderboard ol li:nth-child(12)::after {
+	background: #c24448;
+	box-shadow: 0 -2.5px 0 rgba(0, 0, 0, 0.12);
+	border-radius: 0 0 10px 10px;
+  }
+  .leaderboard ol li:nth-child(12) mark::before, .leaderboard ol li:nth-child(12) mark::after {
+	top: -9px;
+	bottom: auto;
+	border-top: none;
 	border-bottom: 8px solid #993639;
   }
+
   .leaderboard ol li:hover {
 	z-index: 2;
 	overflow: visible;
@@ -233,6 +272,10 @@ h3.steps::after {
 	transition: all 200ms ease-in-out;
 	box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .15);
 	transform: scale3d(1.050, 1.050, 1);
+}
+
+.webgl-content .footer {
+	height: auto !important;
 }
 
 @media (max-width: 800px) {
