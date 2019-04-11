@@ -1,6 +1,6 @@
 
 class RaceDataManager {
-	constructor(time = 1, rounds = {}, roundNumber = 1, running = false, engagement = 0, popup = false) {
+	constructor(time = 1, rounds = {}, roundNumber = 1, running = false, bands = 0, popup = false) {
 		this.time = time;
 		this.timer = null;
 		this.rounds = rounds;
@@ -8,7 +8,7 @@ class RaceDataManager {
 		this.roundAverage = 0;
 		this.highest = 0;
 		this.running = running;
-		this.engagement = engagement;
+		this.bands = bands;
 		this.popup = popup;
 	}
 
@@ -22,11 +22,20 @@ class RaceDataManager {
 				this.stopTimer();
 			} else if (window.started) {
 				this.time++;
-				console.log(this.popup);
-				if ("POPUP ", this.popup)
-					Plotly.extendTraces('plot', {
-						y: [[this.engagement]]
-					}, [0]);
+				var eeg_data = {
+					type: 'bar',
+					x: ["Alpha", "Beta", "Theta", "Gamma"],
+					y: [this.bands.alpha, this.bands.beta, this.bands.theta, this.bands.gamma],
+					marker: {
+						color: '#C8A2C8',
+					}
+				};
+				if (this.popup)
+					Plotly.react('plot', [eeg_data]);
+					// Plotly.extendTraces('plot', {
+					// 	y: [[this.bands.alpha, this.bands.beta, this.bands.theta, this.bands.gamma]]
+					// }, [0]);
+				console.log("HERE ", this.bands);
 			}
 		}, interval || 1000);
 	}
@@ -106,51 +115,9 @@ window.onload = () => {
 		alpha: -1,
 		beta: -1,
 		theta: -1,
+		gamma: -1,
 		engagement: -1
 	};
-
-	// window.Device = new Bluetooth.BCIDevice((sample) => {
-	// 	if (Bluetooth.BCIDevice.electrodeIndex("AF7") !== sample.electrode) return;
-
-	// 	sample.data.forEach(el => {
-	// 		if (buffer.length > BUFFER_SIZE) buffer.shift();
-	// 		buffer.push(el);
-	// 	});
-
-	// 	if (buffer.length < BUFFER_SIZE) return;
-
-	// 	let psd = window.bci.signal.getPSD(BUFFER_SIZE, buffer);
-
-	// 	let alpha = window.bci.signal.getBandPower(BUFFER_SIZE, psd, 256, "alpha");
-	// 	let beta = window.bci.signal.getBandPower(BUFFER_SIZE, psd, 256, "beta");
-	// 	let theta = window.bci.signal.getBandPower(BUFFER_SIZE, psd, 256, "theta");
-	// 	let engagement = beta / (alpha + theta);
-	// 	let sum = alpha + beta + theta;
-
-	// 	let w_alpha = alpha / sum;
-	// 	let w_beta = beta / sum;
-	// 	let w_theta = theta / sum;
-
-	// 	if (weighted.alpha < 0) {
-	// 		weighted.alpha = w_alpha || 0;
-	// 		weighted.beta = w_beta || 0;
-	// 		weighted.theta = w_theta || 0;
-	// 		weighted.engagement = engagement || 0;
-	// 	} else {
-	// 		weighted.alpha = weighted.alpha * WEIGHT + (w_alpha || 0) * (1 - WEIGHT);
-	// 		weighted.beta = weighted.beta * WEIGHT + (w_beta || 0) * (1 - WEIGHT);
-	// 		weighted.theta = weighted.theta * WEIGHT + (w_theta || 0) * (1 - WEIGHT);
-	// 		weighted.engagement = weighted.engagement * WEIGHT + (engagement || 0) * (1 - WEIGHT);
-	// 	}
-
-	// 	if (window.gameInstance.__ready == true) {
-	// 		window.gameInstance.SendMessage("Drone", "SetSpeed", weighted.engagement);
-	// 		dataManager.engagement = weighted.engagement;
-
-	// 		document.getElementById("pre-start").style.display = "none";
-	// 		document.getElementById("footer").style.display = "flex";
-	// 	}
-	// });
 
 	window.Device = new BCIDevice({
 		dataHandler: data => {
@@ -190,8 +157,9 @@ window.onload = () => {
 			}
 
 			if (window.gameInstance.__ready == true) {
-				window.gameInstance.SendMessage("Drone", "SetSpeed", weighted.engagement);
-				dataManager.engagement = weighted.engagement;
+				window.gameInstance.SendMessage("Drone", "SetSpeed", (weighted.gamma/weighted.alpha));
+				dataManager.bands = weighted;
+				// console.log((weighted.gamma/weighted.alpha));
 
 				document.getElementById("pre-start").style.display = "none";
 				document.getElementById("footer").style.display = "flex";
@@ -265,7 +233,7 @@ window.onload = () => {
 
 	$("#plot-button").on("click", () => {
 		Swal.fire({
-			title: '<strong>Engagement Plot</strong>',
+			title: '<strong>EEG Plot</strong>',
 			type: 'info',
 			html: '<div id="plot"></div>',
 			showCloseButton: true,
@@ -279,17 +247,15 @@ window.onload = () => {
 
 		dataManager.popup = true;
 
-		var eeg_data = {
-			mode: 'lines',
-			y: [1],
+		var y_eeg_data = {
+			type: 'bar',
+			x: ["Alpha", "Beta", "Theta", "Gamma"],
+			y: [0, 0, 0, 0],
 			marker: {
 				color: '#C8A2C8',
-				line: {
-					width: 2.5
-				}
 			}
 		};
-		Plotly.newPlot('plot', [eeg_data]);
+		Plotly.newPlot('plot', [y_eeg_data]);
 	});
 
 	$("#instructions-btn").on("click", () => {
