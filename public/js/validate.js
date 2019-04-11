@@ -32,6 +32,7 @@
 
 		if (check) {
 			$(".webgl-content").show();
+			$("#title").show();
 			$(".container-contact2").hide();
 			localStorage.setItem("name", $(name).val().trim());
 			return false;
