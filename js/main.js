@@ -22,7 +22,8 @@ class RaceDataManager {
 				this.stopTimer();
 			} else if (window.started) {
 				this.time++;
-				if (this.popup)
+				console.log(this.popup);
+				if ("POPUP ", this.popup)
 					Plotly.extendTraces('plot', {
 						y: [[this.engagement]]
 					}, [0]);
@@ -200,7 +201,10 @@ window.onload = () => {
 			console.log(status)
 		},
 		connectionHandler: connected => {
-			console.log(connected)
+			if (!connected) {
+				alert("Device connection lost. Please reconnect.")
+				window.location.reload()
+			}
 		}
 	});
 
@@ -221,6 +225,15 @@ window.onload = () => {
 	}
 
 	window.addEventListener("keydown", (e) => {
+		setTimeout(() => {
+			if (window.started && !dataManager.running) {
+				dataManager.running = true;
+				dataManager.startTimer();
+			}
+		}, 1000);
+	});
+
+	document.getElementById("gameContainer").addEventListener("click", (e) => {
 		setTimeout(() => {
 			if (window.started && !dataManager.running) {
 				dataManager.running = true;
