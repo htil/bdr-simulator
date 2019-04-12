@@ -1,4 +1,3 @@
-
 class RaceDataManager {
 	constructor(time = 1, rounds = {}, roundNumber = 1, running = false, bands = 0, popup = false) {
 		this.time = time;
