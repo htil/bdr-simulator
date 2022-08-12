@@ -1,3 +1,5 @@
+import { doc, setDoc } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-firestore.js";
+
 class RaceDataManager {
 	constructor(time = 1, rounds = {}, roundNumber = 1, running = false, bands = 0, popup = false) {
 		this.time = time;
@@ -57,7 +59,8 @@ class RaceDataManager {
 			return roundNum += Number(o);
 		});
 		this.roundAverage = roundNum / (this.roundNumber - 1);
-		fb.collection("simulator-players").add({
+		const playersRef = doc("bdr-simulator", "simulator-players");
+		setDoc(playersRef, {
 			name: name,
 			rounds: this.rounds,
 			round_average: this.roundAverage,
@@ -102,7 +105,7 @@ class RaceDataManager {
 }
 
 window.onload = () => {
-	var fb = firebase.firestore();
+	var fb = document.firestore;
 	const SECONDS = 0.25;
 	const BUFFER_SIZE = SECONDS * 256;
 	const WEIGHT = 0.95;

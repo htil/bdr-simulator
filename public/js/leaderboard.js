@@ -1,12 +1,17 @@
-window.onload = () => {
-	let fb = firebase.firestore();
+import { collection, getDocs, query, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-firestore.js";
+
+window.onload = async () => {
+	let fb = document.firestore;
+	let db = "bdr-simulator";
 	let container = document.getElementById("high-scores");
 	let avg_container = document.getElementById("qualifiers-avgs");
 
-	let coll = fb.collection("simulator-players").orderBy("high_score").limit(12);
-	let coll_avg = fb.collection("simulator-players").orderBy("round_average", "asc").limit(12);
+	let q = query(collection(fb, "simulator-players"), orderBy("high_score", "desc"), limit(12));
+	let q_avg = query(collection(fb, "simulator-players"), orderBy("round_average", "asc"), limit(12));
+	// let coll = await getDocs(q);
+	// let coll_avg = fb.collection("simulator-players").orderBy("round_average", "asc").limit(12);
 
-	coll.onSnapshot((querySnapshot) => {
+	onSnapshot(q, (querySnapshot) => {
 		if (container.children.length != 0) {
 			document.getElementById("leaderboard").children[1].remove();
 			container = document.createElement("ol");
@@ -25,7 +30,7 @@ window.onload = () => {
 		});
 	});
 
-	coll_avg.onSnapshot((querySnapshot) => {
+	onSnapshot(q_avg, (querySnapshot) => {
 		if (avg_container.children.length != 0) {
 			document.getElementById("qualifiers").children[1].remove();
 			avg_container = document.createElement("ol");

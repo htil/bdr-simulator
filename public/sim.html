@@ -111,12 +111,37 @@
 	</div>
 	<!-- End form -->
 </body>
-<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-analytics.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-firestore.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyCuJkTySruhupJNdTJH86NWr0HikEgGvcw",
+      authDomain: "bdr-simulator.firebaseapp.com",
+      projectId: "bdr-simulator",
+      storageBucket: "bdr-simulator.appspot.com",
+      messagingSenderId: "544176262603",
+      appId: "1:544176262603:web:8243691b6c5255da867a4e",
+      measurementId: "G-ZPZM0CJ8HW"
+    };
+  
+    // Initialize Firebase
+    const firebase = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(firebase);
+    document.firestore = getFirestore(firebase);
+  </script>
+<!-- <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-firestore.js"></script>
-<script src="firebase-init.js"></script>
+<script src="firebase-init.js"></script> -->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="js/BCIDevice.pack.js"></script>  
 <script src="js/bci.min.js"></script>
 <script src="js/validate.js"></script> 
-<script src="js/main.js"></script>
+<script type="module" src="js/main.js"></script>
 </html>
